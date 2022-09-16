@@ -32,8 +32,9 @@ jobs:
         run: ./lint.sh --check
       - name: Docker Compose UP
         if: inputs.docker-compose != ''
-        run: docker-compose up -d  ${{ inputs.docker-compose }}
+        run: | 
+          docker-compose up -d  ${{ inputs.docker-compose }}
+          sleep 10
       - name: Run Unit Tests
         run: |
-          sleep 10
           PYTHONPATH=. pipenv run coverage run -m pytest
