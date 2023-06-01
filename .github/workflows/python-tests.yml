@@ -11,15 +11,15 @@ on:
       black:
         required: false
         type: boolean
-        default: true
+        default: false
       autoflake:
         required: false
         type: boolean
-        default: true
+        default: false
       mypy:
         required: false
         type: boolean
-        default: true
+        default: false
       python-version:
         type: string
         default: '3.9'
