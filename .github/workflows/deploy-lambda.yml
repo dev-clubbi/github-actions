@@ -6,6 +6,12 @@ on:
       stage:
         required: true
         type: string
+      python_version:
+        type: string
+        default: '3.9'
+      yarn:
+        type: boolean # prefer yarn
+        default: false
 jobs:
   deploy:
     name: deploy
@@ -13,16 +19,16 @@ jobs:
     environment: ${{ inputs.stage }}
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python 3.9
+      - name: Set up Python ${{ inputs.python_version }}
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: ${{ inputs.python_version }}
           cache: 'pipenv'
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16.x"
-          cache: 'npm'
+          node-version: "20.x"
+          cache: ${{ inputs.yarn && yarn || npm }}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -35,8 +41,13 @@ jobs:
           python -m pip install --upgrade pip pipenv==2022.8.5
           pipenv sync --dev
       - name: Install NPM
+        if: inputs.yarn == false
         run: |
           npm install --dev
+      - name: Install Yarn
+        if: inputs.yarn
+        run: |
+          yarn --dev
       - name: Deploy Layer If needed
         run: |
           pipenv run clubbi_sls_utils_deploy_lambda_layer  ${{ inputs.stage }}
