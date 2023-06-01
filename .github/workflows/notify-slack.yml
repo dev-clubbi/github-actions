@@ -1,0 +1,66 @@
+name: Notify Slack on Production
+
+on:
+  workflow_call:
+
+env:
+  ENVIRONMENT: production
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+  title: ${{ github.event.pull_request.title }}
+  pr_url: ${{ github.event.pull_request.html_url }}
+  repo_url: ${{ github.event.pull_request.head.repo.html_url }}
+  repo_name: ${{ github.event.pull_request.head.repo.full_name }}
+  author: ${{ github.event.pull_request.user.login }}
+
+jobs:
+  notify-slack:
+    name: Notify Slack
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Send Slack Deploy Notification
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "A PR has been merged into *${{ env.ENVIRONMENT }}* and is being deployed.",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "---- Um novo Pull Request foi mergeado na branch main."
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Título*: ${{ env.title }}"
+                  }
+                },
+              {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*URL do PR*: ${{ env.pr_url }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Repositório*: ${{ env.repo_name }} | ${{ env.repo_url }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Autor*: ${{ env.author }}"
+                  }
+                }
+              ]
+            }
