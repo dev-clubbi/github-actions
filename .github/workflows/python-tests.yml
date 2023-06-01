@@ -11,7 +11,7 @@ on:
         required: false
         type: boolean
         default: false
-      python_version:
+      python-version:
         type: string
         default: '3.9'
 jobs:
