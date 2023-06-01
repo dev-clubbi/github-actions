@@ -12,6 +12,8 @@ on:
       yarn:
         type: boolean
         default: false
+
+
 jobs:
   deploy:
     name: deploy
@@ -28,7 +30,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20.x"
-          cache: ${{ inputs.yarn && yarn || npm }}
+          cache: 'npm''
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
