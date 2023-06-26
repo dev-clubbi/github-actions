@@ -23,6 +23,10 @@ on:
       python-version:
         type: string
         default: '3.9'
+      project-path:
+        type: string
+        default: src
+        description: Main project path containing python source code that will be in production
 jobs:
   test:
     name: Test
@@ -42,15 +46,15 @@ jobs:
 
       - name: Linter (Black)
         if: inputs.black
-        run: pipenv run black --check --diff src
+        run: pipenv run black --check --diff ${{ inputs.project-path }}
 
       - name: Linter (Autoflake)
         if: inputs.autoflake
-        run: pipenv run autoflake -cr src
+        run: pipenv run autoflake -cr ${{ inputs.project-path }}
 
       - name: Linter (MyPy)
         if: inputs.mypy
-        run: pipenv run mypy src
+        run: pipenv run mypy ${{ inputs.project-path }}
 
       - name: Docker Compose UP
         if: inputs.docker-compose != ''
