@@ -62,5 +62,8 @@ jobs:
           docker-compose up -d  ${{ inputs.docker-compose }}
           sleep 10
       - name: Run Unit Tests
+        env:
+          PYTHONPATH: .
         run: |
-          PYTHONPATH=. pipenv run coverage run -m pytest
+          pipenv run coverage run -m pytest
+          pipenv run coverage report --sort cover

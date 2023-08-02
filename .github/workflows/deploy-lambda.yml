@@ -76,8 +76,11 @@ jobs:
 
       - name: Run Unit Tests
         if: inputs.test
+        env:
+          PYTHONPATH: .
         run: |
-          PYTHONPATH=. pipenv run coverage run -m pytest
+          pipenv run coverage run -m pytest
+          pipenv run coverage report --sort cover
 
 
       - name: Setup Node.js
