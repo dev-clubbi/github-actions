@@ -37,6 +37,10 @@ on:
         type: string
         default: src
         description: Main project path containing python source code that will be in production
+      lambda_layer:
+        type: boolean
+        default: true
+        description: Enables lambda layer deploy if dependencies change
 
 
 jobs:
@@ -105,6 +109,7 @@ jobs:
         run: |
           yarn --dev
       - name: Deploy Layer If needed
+        if: inputs.lambda_layer
         run: |
           pipenv run clubbi_sls_utils_deploy_lambda_layer  ${{ inputs.stage }}
       - name: Deploy to Lambda
