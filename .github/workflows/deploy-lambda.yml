@@ -38,6 +38,10 @@ on:
         required: false
         type: boolean
         default: true
+      test-dotenv-path:
+        type: string
+        default: ./.env
+        description: .env file to use in tests
       project-path:
         type: string
         default: src
@@ -91,6 +95,7 @@ jobs:
         if: inputs.test
         env:
           PYTHONPATH: .
+          PIPENV_DOTENV_LOCATION: ${{ test-dotenv-path }}
         run: |
           pipenv run coverage run -m pytest
           pipenv run coverage report --sort cover
