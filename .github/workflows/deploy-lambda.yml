@@ -83,7 +83,7 @@ jobs:
       
       - name: Linter (MyPy baseline)
         if: inputs.mypy_baseline
-        run: pipenv run mypy ${{ inputs.project-path }} | pipenv run mypy-baseline filter
+        run: pipenv run mypy ${{ inputs.project-path }} | sort | pipenv run mypy-baseline filter
 
       - name: Docker Compose UP
         if: inputs.docker-compose != ''
