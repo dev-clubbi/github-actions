@@ -43,6 +43,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          # this is to avoid https://github.com/actions/checkout/issues/881
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up Python ${{ inputs.python-version }}
         uses: actions/setup-python@v4
         with:
