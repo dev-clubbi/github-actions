@@ -38,6 +38,10 @@ on:
         required: false
         type: boolean
         default: true
+      test-dotenv-path:
+        type: string
+        default: ./.env
+        description: .env file to use in tests
       project-path:
         type: string
         default: src
@@ -79,7 +83,10 @@ jobs:
       
       - name: Linter (MyPy baseline)
         if: inputs.mypy_baseline
-        run: pipenv run mypy ${{ inputs.project-path }} | pipenv run mypy-baseline filter
+        # the first command is used to avoid https://github.com/python/mypy/issues/16363
+        run: |
+          pipenv run mypy ${{ inputs.project-path }} > /dev/null || true
+          pipenv run mypy ${{ inputs.project-path }} | pipenv run mypy-baseline filter
 
       - name: Docker Compose UP
         if: inputs.docker-compose != ''
@@ -91,6 +98,7 @@ jobs:
         if: inputs.test
         env:
           PYTHONPATH: .
+          PIPENV_DOTENV_LOCATION: ${{ inputs.test-dotenv-path }}
         run: |
           pipenv run coverage run -m pytest
           pipenv run coverage report --sort cover
