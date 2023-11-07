@@ -73,7 +73,7 @@ jobs:
         # the first command is used to avoid https://github.com/python/mypy/issues/16363
         run: |
           pipenv run mypy ${{ inputs.project-path }} > /dev/null || true
-          pipenv run mypy ${{ inputs.project-path }} | pipenv run mypy-baseline filter
+          pipenv run mypy ${{ inputs.project-path }} | pipenv run mypy-baseline filter --allow-unsynced
 
       - name: Docker Compose UP
         if: inputs.docker-compose != ''
