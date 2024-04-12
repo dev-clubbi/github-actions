@@ -50,6 +50,11 @@ on:
         type: boolean
         default: true
         description: Enables lambda layer deploy if dependencies change
+    secrets:
+      AWS_ACCESS_KEY:
+        required: false
+      AWS_ACCESS_KEY_SECRET:
+        required: false
 
 
 jobs:
