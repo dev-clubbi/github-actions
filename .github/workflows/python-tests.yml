@@ -78,7 +78,7 @@ jobs:
       - name: Docker Compose UP
         if: inputs.docker-compose != ''
         run: |
-          docker-compose up -d  ${{ inputs.docker-compose }}
+          docker compose up -d  ${{ inputs.docker-compose }}
           sleep 10
       - name: Run Unit Tests
         env:
