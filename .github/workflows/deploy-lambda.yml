@@ -67,8 +67,7 @@ jobs:
       - name: Set up Python ${{ inputs.python-version }}
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12"
-          # python-version: ${{ inputs.python-version }}
+          python-version: ${{ inputs.python-version }}
           cache: 'pipenv'
       - name: Install Pip and Pipenv
         run: |
