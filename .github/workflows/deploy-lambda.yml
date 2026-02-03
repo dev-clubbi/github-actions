@@ -130,6 +130,13 @@ jobs:
         if: inputs.yarn
         run: |
           yarn --dev
+      - name: Build requirements for lambda layer (no lock)
+        if: inputs.lambda_layer
+        run: |
+          pipenv run python -m pip install -U pip
+          pipenv requirements > requirements-layer.txt
+          sed -i 's/;.*$//' requirements-layer.txt || true
+          cat requirements-layer.txt | head -n 40
       - name: Deploy Layer If needed
         if: inputs.lambda_layer
         run: |
