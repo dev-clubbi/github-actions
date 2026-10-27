@@ -60,7 +60,7 @@ on:
 jobs:
   deploy:
     name: deploy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: ${{ inputs.stage }}
     steps:
       - uses: actions/checkout@v3
